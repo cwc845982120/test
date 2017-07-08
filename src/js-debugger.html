@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src='./js/lib/jquery/jquery-2.0.0.js' ansyc='ansyc'></script>
+</head>
+
+<body>
+    <script>
+        //js调试
+        //闭包陷进
+        const Greeters = []
+        for (var i = 0; i < 10; i++) {
+            Greeters.push(function() {
+                return console.log(i)
+            })
+        }
+        Greeters[0]() // 10
+        Greeters[1]() // 10
+        Greeters[2]() // 10
+    </script>
+</body>
+
+</html>
