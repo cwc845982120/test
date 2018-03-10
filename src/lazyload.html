@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <title>图片懒加载</title>
+</head>
+<style>
+    *{margin: 0;padding: 0;}
+    img{width: 48%;height: 150px;display: inline;border: 1px solid #ccc;}
+</style>
+<body>
+<div id="div">
+    <div id="one">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+    </div>
+    <div id="two">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+        <img class="img" data-url="./assets/img/bg.jpg" src="./assets/img/bg.jpg" alt="">
+    </div>
+</div>
+<script>
+    //首次进入触发判断
+    getList();
+    function getList(){
+        //第一次显示的图片列表高度
+        var contentHeight = document.getElementById('one').offsetHeight;
+        //设备可用高度
+        var availHeight =  window.screen.availHeight;
+        //如果不滚动two直接被显示出来
+        if (contentHeight<availHeight){
+            //遍历#one下的img，然后替换路径
+            for(var x = 0;x < document.querySelectorAll('#one .img').length;x++){
+                var imgUrl = document.querySelectorAll('#one .img')[x].getAttribute('data-url');
+                var img = new Image();
+                img.src = imgUrl;
+                img.onload = (function(e){
+                    document.querySelectorAll('#one .img')[x].src = document.querySelectorAll('#one .img')[x].getAttribute('data-url');
+                })();
+            }
+            //遍历#two，然后替换路径
+            for(var x = 0;x < document.querySelectorAll('#two .img').length;x++){
+                var imgUrl = document.querySelectorAll('#two .img')[x].getAttribute('data-url');
+                var img = new Image();
+                img.src = imgUrl;
+                img.onload = (function(e){
+                    document.querySelectorAll('#two .img')[x].src = document.querySelectorAll('#two .img')[x].getAttribute('data-url');
+                })();
+            }
+        }else {
+            //遍历#one下的img，然后替换路径
+            for(var x = 0;x < document.querySelectorAll('#one .img').length;x++){
+                var imgUrl = document.querySelectorAll('#one .img')[x].getAttribute('data-url');
+                var img = new Image();
+                img.src = imgUrl;
+                img.onload = (function(e){
+                    document.querySelectorAll('#one .img')[x].src = document.querySelectorAll('#one .img')[x].getAttribute('data-url');
+                })();
+            }
+        }
+    }
+    //#two显示的次数    0是第一次显示
+    var twoShowTime = 0;
+    //滚动事件
+    window.onscroll = function(){
+        if (twoShowTime == 0){
+            scroll();
+        }
+    };
+    //滚动判断图片是否加载
+    function scroll() {
+        //#content的高度
+        var contentHeight = document.getElementById('one').offsetHeight;
+        //设备可用高度
+        var availHeight = window.screen.availHeight;
+        //滚动的高度
+        var scrollHeight = document.body.scrollTop;
+        //判断如果显示出来了#two
+        if (scrollHeight > contentHeight - availHeight) {
+            //遍历#two下的img，然后替换路径
+            for (var x = 0; x < document.querySelectorAll('#two .img').length; x++) {
+                var imgUrl = document.querySelectorAll('#two .img')[x].getAttribute('data-url');
+                var img = new Image();
+                img.src = imgUrl;
+                img.onload = (function () {
+                    document.querySelectorAll('#two .img')[x].src = document.querySelectorAll('#two .img')[x].getAttribute('data-url');
+                })();
+            }
+            twoShowTime = 1;
+        }
+    }
+</script>
+</body>
+</html>
